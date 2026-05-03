@@ -8,9 +8,11 @@ warnings.filterwarnings('ignore', message='.*HF_TOKEN.*')
 
 # Set HF_HUB_DISABLE_TELEMETRY to suppress additional warnings
 os.environ['HF_HUB_DISABLE_TELEMETRY'] = '1'
-# Set a dummy token or use offline mode to suppress authentication warnings
+# Enable offline mode unless an HF token is explicitly set, so no network
+# calls are attempted (prevents SOCKS proxy / socksio errors when offline).
 if not os.environ.get('HF_TOKEN'):
     os.environ['HF_HUB_OFFLINE'] = '1'
+    os.environ['TRANSFORMERS_OFFLINE'] = '1'
 
 from kokoro import KPipeline
 import soundfile as sf
